@@ -27,7 +27,7 @@ public class Main extends SimpleApplication {
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
-
+//OIIO;IO
         rootNode.attachChild(geom);
     }
 
