@@ -30,7 +30,7 @@ public class Main extends SimpleApplication {
 
         rootNode.attachChild(geom);
     }
-//DFGDFGASDAASDASDAASDASV
+//asd
     //WOOOOOOOW
     
     @Override
