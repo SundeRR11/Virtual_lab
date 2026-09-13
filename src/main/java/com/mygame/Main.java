@@ -30,7 +30,7 @@ public class Main extends SimpleApplication {
 
         rootNode.attachChild(geom);
     }
-//DFGDFGASDA
+//DFGDFGASDAASDASDAASDAS
     @Override
     public void simpleUpdate(float tpf) {
         //TODO: add update code
