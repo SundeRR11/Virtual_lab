@@ -28,6 +28,7 @@ public class Main extends SimpleApplication {
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
 //OIIO;IO
+        //Привет здоровяк
         rootNode.attachChild(geom);
     }
 
