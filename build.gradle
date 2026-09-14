@@ -1,94 +1,50 @@
 plugins {
     id 'java'
-    id 'application'
+    // Рекомендуется добавить плагин для Lombok (упрощает настройку)
+    // id 'io.freefair.lombok' version '8.6'  // раскомментируйте, если хотите использовать плагин
 }
 
-group = 'com.correspondenceapp'
-version = '1.0'
-
-application {
-    applicationName = 'Virtual_lab'
-    mainClass = 'com.correspondenceapp.Main'
-    // Mac OS with LWJGL 3 needs to be started with this JVM argument
-    if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-        applicationDefaultJvmArgs = ['-XstartOnFirstThread']
-    }
-}
+group = 'com.spring'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url = 'https://jitpack.io' }
 }
 
-project.ext {
-  jmeVer = '3.9.0-stable'
+compileJava {
+    options.encoding = 'UTF-8'
 }
 
-project(":assets") {
-    apply plugin: "java"
-
-    buildDir = rootProject.file("build/assets")
-
-    sourceSets {
-        main {
-            resources {
-                srcDir '.'
-            }
-        }
-    }
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
-        }
-    }
+compileTestJava {
+    options.encoding = 'UTF-8'
 }
 
 dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
-  // Core JME
-  implementation "org.jmonkeyengine:jme3-core:$jmeVer"
-  implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
-  // Mac OS with LWJGL 3 doesn't allow AWT/Swing
-  if (!System.getProperty("os.name").toLowerCase().contains("mac")) {
-    implementation "org.jmonkeyengine:jme3-awt-dialogs:$jmeVer"
-  }
-  implementation "org.jmonkeyengine:jme3-lwjgl3:$jmeVer"
-
-  // Suppress errors / warnings building in SDK
-  implementation "org.jmonkeyengine:jme3-jogg:$jmeVer"
-  implementation "org.jmonkeyengine:jme3-plugins:$jmeVer"
-  
-  // GUI Library
-  implementation "com.simsilica:lemur:1.16.0"
-  
-  // Physics Library
-  implementation "org.jmonkeyengine:jme3-jbullet:$jmeVer"
-
-  // Additional Libraries
-  implementation "org.jmonkeyengine:jme3-effects:$jmeVer"
-  implementation "org.jmonkeyengine:jme3-testdata:$jmeVer"
-  implementation "org.jmonkeyengine:jme3-vr:$jmeVer"
-  implementation "com.github.stephengold:Heart:9.2.0"
-  implementation "com.epagagames:particlemonkey:1.1.0"
-  implementation "com.github.polincdev:ShaderBlowEx:-SNAPSHOT"
-
-  // Assets sub-project
-  runtimeOnly project(':assets')
+    // JME
+    implementation "org.jmonkeyengine:jme3-core:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-desktop:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-lwjgl3:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-effects:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-plugins:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-jbullet:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-jogg:3.9.0-stable"
+    implementation "org.jmonkeyengine:jme3-niftygui:3.9.0-stable"
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': application.mainClass
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('apiJar', Jar) {
+    archiveFileName.set('module-api.jar')
+    from(sourceSets.main.output) {
+        include 'com/mygame/plugins/api/**'
     }
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
-    }
-}
-
-wrapper {
-    gradleVersion = '9.2.1'
+tasks.named('build') {
+    finalizedBy('apiJar')
 }

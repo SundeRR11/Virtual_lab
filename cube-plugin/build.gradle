@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.mygame'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation files("../build/libs/module-api.jar")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+    archiveFileName = "cube-module.jar"
+}
+
+
+tasks.register("installPlugin", Copy) {
+    // Указываем, что нужно дождаться сборки jar
+    dependsOn tasks.named('jar')
+
+    // Берем результат задачи jar и копируем в папку plugins основного проекта
+    from tasks.named('jar').get().archiveFile
+    into "../plugins"
+}
